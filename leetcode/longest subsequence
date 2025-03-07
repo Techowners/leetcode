@@ -1,0 +1,41 @@
+#include <stdio.h>
+#include <string.h>
+
+// Define a helper function to get the maximum of two integers
+int max(int a, int b) {
+    return a > b ? a : b;
+}
+
+int lengthOfLongestSubstring(char *s) {
+    int n = strlen(s);
+    int start = 0;  // Left pointer of the sliding window
+    int maxLength = 0;
+    int seen[128] = {0};  // Array to track character frequency (assuming ASCII characters)
+    
+    for (int end = 0; end < n; end++) {
+        // If the character is already in the window, move the 'start' pointer
+        if (seen[s[end]] > 0) {
+            start = max(start, seen[s[end]]);
+        }
+        
+        // Update the last seen position of the character
+        seen[s[end]] = end + 1;
+        
+        // Calculate the length of the current window and update the maxLength
+        maxLength = max(maxLength, end - start + 1);
+    }
+    
+    return maxLength;
+}
+
+int main() {
+    char s1[] = "abcabcbb";
+    char s2[] = "bbbbb";
+    char s3[] = "pwwkew";
+    
+    printf("Length of longest substring for s1: %d\n", lengthOfLongestSubstring(s1)); // Output: 3
+    printf("Length of longest substring for s2: %d\n", lengthOfLongestSubstring(s2)); // Output: 1
+    printf("Length of longest substring for s3: %d\n", lengthOfLongestSubstring(s3)); // Output: 3
+    
+    return 0;
+}
